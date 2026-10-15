@@ -1,0 +1,14 @@
+# Build the image and serve it on http://localhost:8080
+#
+#   docker compose up --build
+#
+# nginx listens on port 80 inside the container; change the left-hand side of
+# the mapping to move it.
+
+services:
+  librescope:
+    build: .
+    image: librescope:local
+    ports:
+      - "8080:80"
+    restart: unless-stopped
