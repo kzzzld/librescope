@@ -143,6 +143,7 @@ export default function App() {
             <TreeView
               outline={graph.outline}
               activeId={hoveredId ?? selectedId}
+              selectedId={selectedId}
               onSelect={handleSelect}
               onHover={handleHover}
             />
