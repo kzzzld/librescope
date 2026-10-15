@@ -38,6 +38,7 @@
 
           meta = {
             description = "Explore the open-source ecosystem as a node graph";
+            license = nixpkgs.lib.licenses.mit;
             platforms = nixpkgs.lib.platforms.all;
           };
         };
