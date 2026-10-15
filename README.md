@@ -75,7 +75,8 @@ Settings → **Layout** switches between two ways of reading the same data:
 
 They share selection: clicking a row in the tree opens the same side panel, and a
 merged node like `rpm` appears in both of its branches and highlights in both.
-The chosen view is remembered in `localStorage`.
+In the tree, a node's **name selects** it while its **dot folds that branch
+away** and back. The chosen view is remembered in `localStorage`.
 
 ## Themes
 
