@@ -13,7 +13,12 @@ export default function NodePanel({ node, neighbours, onSelect, onClose }: NodeP
 
   return (
     <aside className="panel" aria-label={`Details for ${node.name}`}>
-      <button type="button" className="panel__close" onClick={onClose} aria-label="Close panel">
+      <button
+        type="button"
+        className="icon-button panel__close"
+        onClick={onClose}
+        aria-label="Close panel"
+      >
         ×
       </button>
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import GraphView from './components/Graph'
 import NodePanel from './components/NodePanel'
+import SettingsDialog from './components/SettingsDialog'
 import { fetchGraph } from './lib/graph'
 import type { Graph } from './types'
 
@@ -9,6 +10,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [size, setSize] = useState({ width: 0, height: 0 })
   const stageRef = useRef<HTMLDivElement | null>(null)
 
@@ -65,14 +67,40 @@ export default function App() {
   const handleHover = useCallback((id: string | null) => setHoveredId(id), [])
   const handleSelect = useCallback((id: string | null) => setSelectedId(id), [])
   const handleClose = useCallback(() => setSelectedId(null), [])
+  const openSettings = useCallback(() => setSettingsOpen(true), [])
+  const closeSettings = useCallback(() => setSettingsOpen(false), [])
 
   const hasSize = size.width > 0 && size.height > 0
 
   return (
     <div className="app">
       <header className="app__header">
-        <h1 className="app__title">LibreScope</h1>
-        <p className="app__hint">Drag to pan · scroll to zoom · drag a node · click for details</p>
+        <div className="app__heading">
+          <h1 className="app__title">LibreScope</h1>
+          <p className="app__hint">Drag to pan · scroll to zoom · drag a node · click for details</p>
+        </div>
+        <button
+          type="button"
+          className="app__settings"
+          onClick={openSettings}
+          aria-label="Open settings"
+          title="Settings"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="17"
+            height="17"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
       </header>
 
       <div className="app__body">
@@ -120,6 +148,8 @@ export default function App() {
           parent → child edge
         </span>
       </footer>
+
+      <SettingsDialog open={settingsOpen} onClose={closeSettings} />
     </div>
   )
 }

@@ -36,7 +36,39 @@ body {
 }
 
 .app__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   padding: 16px 20px 10px;
+}
+
+.app__heading {
+  min-width: 0;
+}
+
+.app__settings {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.app__settings:hover {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.app__settings:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .app__title {
@@ -133,10 +165,14 @@ body {
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 28px;
-  height: 28px;
+}
+
+/* Shared square icon button, used by the panel and the settings dialog. */
+.icon-button {
   display: grid;
   place-items: center;
+  width: 28px;
+  height: 28px;
   padding: 0;
   font-size: 18px;
   line-height: 1;
@@ -147,9 +183,14 @@ body {
   cursor: pointer;
 }
 
-.panel__close:hover {
+.icon-button:hover {
   color: var(--fg);
   border-color: var(--border);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .panel__name {
@@ -243,6 +284,48 @@ body {
     width: auto;
     background: var(--bg);
   }
+}
+
+/* --- settings dialog --------------------------------------------------- */
+
+.settings {
+  width: min(520px, calc(100vw - 32px));
+  padding: 0;
+  color: var(--fg);
+  background: transparent;
+  border: 0;
+}
+
+.settings::backdrop {
+  background: rgba(6, 8, 11, 0.62);
+}
+
+.settings__panel {
+  padding: 20px 22px 24px;
+  background: #10141a;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.settings__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.settings__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.settings__empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 /* --- graph ------------------------------------------------------------- */
