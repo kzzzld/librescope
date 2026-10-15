@@ -65,14 +65,43 @@ works too if you'd rather not use Compose.
 
 ## Nix
 
+**Development shell**
+
 ```bash
 nix develop     # a shell with Node and npm
 npm install
 npm run dev
 ```
 
-The flake provides a dev shell only — it does not build the app, so no
-`npmDepsHash` needs refreshing.
+**Build**
+
+```bash
+nix build       # result/share/librescope
+```
+
+Dependencies are taken from `package-lock.json` via `importNpmLock`, so there is
+no `npmDepsHash` to refresh when dependencies move.
+
+**Deploy on NixOS**
+
+The flake exports a NixOS module, so a configuration only needs:
+
+```nix
+{
+  inputs.librescope.url = "github:<you>/librescope";
+
+  # configuration.nix
+  services.librescope = {
+    enable = true;
+    port = 5555;          # default: 5555
+    openFirewall = true;  # default: false
+  };
+}
+```
+
+It serves the built site with nginx, so enabling it also turns on
+`services.nginx`. Point `services.librescope.package` somewhere else to override
+what gets served.
 
 ## Interactions
 

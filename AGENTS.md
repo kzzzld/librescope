@@ -130,8 +130,12 @@ whole vocabulary is `name`, `id`, `description`, `url` and `children`.
 - `Dockerfile` builds the site with Node and serves `dist/` from nginx, in two
   stages so the runtime image has no toolchain. If you change the container port,
   keep `EXPOSE` and the mapping in `docker-compose.yml` in step.
-- `flake.nix` provides a dev shell (`nix develop`) and nothing else — no package
-  output, so there is no `npmDepsHash` to maintain.
+- `flake.nix` provides three things: a dev shell (`nix develop`), the package
+  (`nix build` — a static site, built with `buildNpmPackage`), and
+  `nixosModules.default`, which serves that build with nginx on
+  `services.librescope.port` (default 5555). Dependencies come from
+  `package-lock.json` through `importNpmLock`, so there is no `npmDepsHash` to
+  refresh when they move.
 - Neither needs any change to the app: the build is a plain static site, and Vite
   copies `public/data.json` into `dist/` on its own.
 
