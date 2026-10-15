@@ -1,0 +1,52 @@
+{
+  "name": "Desktop",
+  "children": [
+    {
+      "name": "Linux",
+      "children": [
+        {
+          "name": "Init Systems",
+          "children": [
+            { "name": "systemd" },
+            { "name": "runit" },
+            { "name": "s6" },
+            { "name": "openrc" }
+          ]
+        },
+        {
+          "name": "Distros",
+          "children": [
+            {
+              "name": "Debian",
+              "children": [{ "name": "apt" }]
+            },
+            {
+              "name": "Fedora",
+              "children": [{ "name": "rpm" }, { "name": "dnf" }]
+            },
+            {
+              "name": "openSUSE",
+              "children": [{ "name": "rpm" }, { "name": "zypper" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BSD",
+      "children": [
+        {
+          "name": "Distros",
+          "children": [
+            {
+              "name": "FreeBSD",
+              "children": [{ "name": "pkg" }]
+            },
+            { "name": "OpenBSD" },
+            { "name": "NetBSD" }
+          ]
+        }
+      ]
+    }
+  ]
+}
