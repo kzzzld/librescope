@@ -42,6 +42,11 @@ derived automatically from the hierarchy rather than being written by hand.
   reserved for hover/selection. Do not push per-tick positions into React state.
 - App chrome lives in `src/components/`: `NodePanel.tsx` is the node side panel
   and `SettingsDialog.tsx` is the settings popup, opened from the header gear.
+- There are two views of the same `Graph`, switched in Settings → Layout:
+  `Graph.tsx` (force-directed SVG) and `TreeView.tsx` (indented outline built
+  from `graph.outline`). Both read the same data and share hover/selection, which
+  `App.tsx` owns. The chosen view sits in `src/preferences.ts` and is remembered
+  in `localStorage`.
 
 ## Theming
 

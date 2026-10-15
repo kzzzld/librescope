@@ -65,6 +65,18 @@ Then open the printed local URL.
 - Open **Settings** from the gear button in the header. Escape, the × button or a
   click outside close it.
 
+## Views
+
+Settings → **Layout** switches between two ways of reading the same data:
+
+- **Graph** — the force-directed node graph.
+- **Tree** — the hierarchy as an indented outline, matching how it is written in
+  `data.json`.
+
+They share selection: clicking a row in the tree opens the same side panel, and a
+merged node like `rpm` appears in both of its branches and highlights in both.
+The chosen view is remembered in `localStorage`.
+
 ## Themes
 
 Settings offers a colour scheme: LibreScope Dark (the default), Catppuccin Mocha
