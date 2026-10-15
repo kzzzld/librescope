@@ -30,12 +30,19 @@ export function buildGraph(tree: TreeNode): Graph {
   const edges: GraphEdge[] = []
   const seenEdges = new Set<string>()
 
-  function ensure(key: string, name: string, path: string, depth: number): GraphNode {
+  function ensure(
+    key: string,
+    name: string,
+    description: string,
+    path: string,
+    depth: number,
+  ): GraphNode {
     let node = byKey.get(key)
     if (!node) {
       node = {
         id: key,
         name,
+        description,
         path,
         depth,
         degree: 0,
@@ -44,10 +51,12 @@ export function buildGraph(tree: TreeNode): Graph {
       }
       byKey.set(key, node)
       nodes.push(node)
-    } else if (depth < node.depth) {
+    } else {
       // A merged node sits at its shallowest appearance, so it never renders
-      // smaller than the level it was first seen at.
-      node.depth = depth
+      // smaller than the level it was first seen at. Fill in a description if
+      // the first occurrence did not carry one.
+      if (depth < node.depth) node.depth = depth
+      if (!node.description && description) node.description = description
     }
     return node
   }
@@ -73,9 +82,11 @@ export function buildGraph(tree: TreeNode): Graph {
     const name = typeof current.name === 'string' ? current.name.trim() : ''
     if (!name) return
 
+    const description =
+      typeof current.description === 'string' ? current.description.trim() : ''
     const key = nodeKey(current, name, parentKey)
     const path = nodePath(name, parentPath)
-    const node = ensure(key, name, path, depth)
+    const node = ensure(key, name, description, path, depth)
     node.occurrences += 1
     node.isShared = node.occurrences > 1
 

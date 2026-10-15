@@ -1,32 +1,72 @@
 {
   "name": "Desktop",
+  "description": "Desktop computing — the machines people actually sit in front of. Its two big families, Linux and the BSDs, share a Unix heritage but differ in kernel, licensing and governance.",
   "children": [
     {
       "name": "Linux",
+      "description": "An operating system kernel started by Linus Torvalds in 1991 and released under the GPLv2. Around it grew the largest open-source ecosystem: it runs most of the world's servers, every Android phone, and a sizeable share of desktops.",
       "children": [
         {
           "name": "Init Systems",
+          "description": "The first process the kernel starts, plus the machinery that brings services up and supervises them afterwards. The choice of init shapes how a distribution boots and how daemons are managed.",
           "children": [
-            { "name": "systemd" },
-            { "name": "runit" },
-            { "name": "s6" },
-            { "name": "openrc" }
+            {
+              "name": "systemd",
+              "description": "The dominant init system and service manager, introduced by Lennart Poettering in 2010. It handles boot, services, timers and logging through journald — powerful, and often criticised for how much it absorbs."
+            },
+            {
+              "name": "runit",
+              "description": "A minimal init and process-supervision suite. Small, fast and easy to reason about; it is the default init in Void Linux."
+            },
+            {
+              "name": "s6",
+              "description": "A supervision suite by Laurent Bercot, built from small, composable tools. Favoured by distributions such as Artix and Obarun that want supervision without systemd."
+            },
+            {
+              "name": "openrc",
+              "description": "A dependency-based init system used by Gentoo and Alpine Linux. It keeps the classic SysV-style script model while adding proper dependency handling."
+            }
           ]
         },
         {
           "name": "Distros",
+          "description": "A distribution bundles the Linux kernel with a package manager, a userland and sensible defaults. Distributions are how people actually install and run Linux.",
           "children": [
             {
               "name": "Debian",
-              "children": [{ "name": "apt" }]
+              "description": "A community-run distribution founded in 1993, known for stability and a strict free-software policy. It is the base for Ubuntu, Linux Mint and countless others.",
+              "children": [
+                {
+                  "name": "apt",
+                  "description": "Debian's package manager, and the tool nearly every Debian-derived distribution uses to install and upgrade software. It resolves dependencies over .deb packages."
+                }
+              ]
             },
             {
               "name": "Fedora",
-              "children": [{ "name": "rpm", "id": "rpm" }, { "name": "dnf" }]
+              "description": "Red Hat's fast-moving community distribution. New upstream technology lands here first and later flows into Red Hat Enterprise Linux. Software is packaged as RPMs.",
+              "children": [
+                {
+                  "name": "rpm",
+                  "id": "rpm",
+                  "description": "The RPM Package Manager: a package format and toolchain from Red Hat, used by Fedora, RHEL and openSUSE. This node is shared — the same tooling shows up in two different ecosystems."
+                },
+                {
+                  "name": "dnf",
+                  "description": "Fedora's package manager and the successor to yum. It resolves dependencies and installs RPM packages, leaning on the libsolv solver in recent versions."
+                }
+              ]
             },
             {
               "name": "openSUSE",
-              "children": [{ "name": "rpm", "id": "rpm" }, { "name": "zypper" }]
+              "description": "A community distribution backed by SUSE, notable for its YaST administration tool and the Tumbleweed rolling release. It packages software as RPMs too.",
+              "children": [
+                { "name": "rpm", "id": "rpm" },
+                {
+                  "name": "zypper",
+                  "description": "openSUSE's package manager. It installs RPM packages and integrates with the distribution's repositories, patterns and system rollback."
+                }
+              ]
             }
           ]
         }
@@ -34,16 +74,30 @@
     },
     {
       "name": "BSD",
+      "description": "The Berkeley Software Distribution family: free Unix-like systems descended from the original Unix. Each project ships its kernel and userland together as one coherent operating system.",
       "children": [
         {
           "name": "Distros",
+          "description": "The BSD projects are complete operating systems rather than kernels with a bolted-on userland, so the distribution and the operating system largely coincide.",
           "children": [
             {
               "name": "FreeBSD",
-              "children": [{ "name": "pkg" }]
+              "description": "A general-purpose BSD with a reputation for performance and networking. Common on servers and appliances — Netflix uses it for content delivery.",
+              "children": [
+                {
+                  "name": "pkg",
+                  "description": "FreeBSD's binary package manager. It installs prebuilt packages quickly, and can also drive builds from the Ports collection."
+                }
+              ]
             },
-            { "name": "OpenBSD" },
-            { "name": "NetBSD" }
+            {
+              "name": "OpenBSD",
+              "description": "Focused on security and correctness, with a famously thorough audit of its code. It gave the world OpenSSH and the PF firewall."
+            },
+            {
+              "name": "NetBSD",
+              "description": "Portability above all — it runs on more hardware architectures than any other operating system, and keeps a clean, well-structured codebase while doing it."
+            }
           ]
         }
       ]

@@ -14,6 +14,8 @@ export interface TreeNode {
    * places to make them one shared node (e.g. `rpm` under Fedora and openSUSE).
    */
   id?: string
+  /** Prose shown in the side panel when the node is selected. */
+  description?: string
   children?: TreeNode[]
 }
 
@@ -32,6 +34,8 @@ export interface GraphNode extends SimulationNodeDatum {
   id: string
   /** Display label, taken from the first occurrence of this node. */
   name: string
+  /** Prose shown in the side panel, taken from the first occurrence. */
+  description: string
   /** Path from the root, e.g. `Desktop/Linux/Distros`. */
   path: string
   /** Distance from the root: the root is 0, its children are 1, and so on. */

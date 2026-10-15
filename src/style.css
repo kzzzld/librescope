@@ -52,13 +52,19 @@ body {
   color: var(--muted);
 }
 
+.app__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
 .app__stage {
   position: relative;
   flex: 1;
-  min-height: 0;
+  min-width: 0;
   overflow: hidden;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
 }
 
 .app__message {
@@ -109,6 +115,134 @@ body {
   width: 18px;
   height: 2px;
   background: var(--edge);
+}
+
+/* --- side panel -------------------------------------------------------- */
+
+.panel {
+  position: relative;
+  flex: 0 0 340px;
+  width: 340px;
+  padding: 22px 22px 28px;
+  overflow-y: auto;
+  background: #10141a;
+  border-left: 1px solid var(--border);
+}
+
+.panel__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.panel__close:hover {
+  color: var(--fg);
+  border-color: var(--border);
+}
+
+.panel__name {
+  margin: 0 32px 6px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.panel__path {
+  margin: 0 0 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.panel__badge {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--node-shared);
+  background: rgba(224, 169, 74, 0.14);
+  border-radius: 999px;
+}
+
+.panel__description {
+  margin: 0 0 22px;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: #cfd6e0;
+}
+
+.panel__section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.panel__count {
+  padding: 1px 8px;
+  font-size: 11px;
+  color: var(--fg);
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panel__link {
+  display: block;
+  width: 100%;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.panel__link:hover {
+  background: rgba(110, 168, 254, 0.12);
+}
+
+@media (max-width: 760px) {
+  .app__body {
+    position: relative;
+  }
+
+  .panel {
+    position: absolute;
+    inset: 0;
+    flex: none;
+    width: auto;
+    background: var(--bg);
+  }
 }
 
 /* --- graph ------------------------------------------------------------- */

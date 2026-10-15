@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import GraphView from './components/Graph'
+import NodePanel from './components/NodePanel'
 import { fetchGraph } from './lib/graph'
 import type { Graph } from './types'
 
@@ -30,18 +31,40 @@ export default function App() {
   useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
-    const observer = new ResizeObserver((entries) => {
-      const rect = entries[0]?.contentRect
-      if (rect) {
-        setSize({ width: Math.round(rect.width), height: Math.round(rect.height) })
-      }
-    })
+
+    const measure = () => {
+      const rect = stage.getBoundingClientRect()
+      setSize({ width: Math.round(rect.width), height: Math.round(rect.height) })
+    }
+
+    // Measure immediately: a ResizeObserver callback can be deferred, and the
+    // graph must not stay hidden waiting for it.
+    measure()
+    const observer = new ResizeObserver(measure)
     observer.observe(stage)
     return () => observer.disconnect()
   }, [])
 
+  const selected = useMemo(
+    () => (graph && selectedId ? (graph.nodes.find((node) => node.id === selectedId) ?? null) : null),
+    [graph, selectedId],
+  )
+
+  const neighbours = useMemo(() => {
+    if (!graph || !selected) return []
+    const ids = new Set<string>()
+    for (const edge of graph.edges) {
+      if (edge.source.id === selected.id) ids.add(edge.target.id)
+      else if (edge.target.id === selected.id) ids.add(edge.source.id)
+    }
+    return graph.nodes
+      .filter((node) => ids.has(node.id))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [graph, selected])
+
   const handleHover = useCallback((id: string | null) => setHoveredId(id), [])
   const handleSelect = useCallback((id: string | null) => setSelectedId(id), [])
+  const handleClose = useCallback(() => setSelectedId(null), [])
 
   const hasSize = size.width > 0 && size.height > 0
 
@@ -49,25 +72,36 @@ export default function App() {
     <div className="app">
       <header className="app__header">
         <h1 className="app__title">LibreScope</h1>
-        <p className="app__hint">Drag to pan · scroll to zoom · drag a node · click to focus</p>
+        <p className="app__hint">Drag to pan · scroll to zoom · drag a node · click for details</p>
       </header>
 
-      <div className="app__stage" ref={stageRef}>
-        {error ? (
-          <p className="app__message app__message--error">
-            Could not load <code>data.json</code> — {error}
-          </p>
-        ) : null}
-        {!error && !graph ? <p className="app__message">Loading…</p> : null}
-        {graph && hasSize ? (
-          <GraphView
-            graph={graph}
-            width={size.width}
-            height={size.height}
-            hoveredId={hoveredId}
-            selectedId={selectedId}
-            onHover={handleHover}
+      <div className="app__body">
+        <div className="app__stage" ref={stageRef}>
+          {error ? (
+            <p className="app__message app__message--error">
+              Could not load <code>data.json</code> — {error}
+            </p>
+          ) : null}
+          {!error && !graph ? <p className="app__message">Loading…</p> : null}
+          {graph && hasSize ? (
+            <GraphView
+              graph={graph}
+              width={size.width}
+              height={size.height}
+              hoveredId={hoveredId}
+              selectedId={selectedId}
+              onHover={handleHover}
+              onSelect={handleSelect}
+            />
+          ) : null}
+        </div>
+
+        {selected ? (
+          <NodePanel
+            node={selected}
+            neighbours={neighbours}
             onSelect={handleSelect}
+            onClose={handleClose}
           />
         ) : null}
       </div>
