@@ -131,6 +131,51 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Windows",
+      "description": "Microsoft's proprietary desktop operating system. Not open source itself, but it runs a great deal of it — which is what the package managers below are for.",
+      "url": "https://www.microsoft.com/windows",
+      "children": [
+        {
+          "name": "winget",
+          "description": "Microsoft's own package manager, formally the Windows Package Manager. It installs from a community-maintained catalogue of manifests and ships with recent versions of Windows.",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/"
+        },
+        {
+          "name": "chocolatey",
+          "description": "A long-standing package manager for Windows, built on the NuGet packaging format. It predates winget and has a very large community repository.",
+          "url": "https://chocolatey.org/"
+        },
+        {
+          "name": "scoop",
+          "description": "A command-line installer for Windows aimed at developers. It installs into a per-user directory, so it never needs administrator rights.",
+          "url": "https://scoop.sh/"
+        }
+      ]
+    },
+    {
+      "name": "macOS",
+      "description": "Apple's proprietary desktop operating system, and a common home for open-source developer tooling — most of which arrives through Homebrew.",
+      "url": "https://www.apple.com/macos/",
+      "children": [
+        {
+          "name": "homebrew",
+          "description": "The package manager most macOS developers use. It installs command-line tools and graphical applications, and runs on Linux too.",
+          "url": "https://brew.sh/"
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "description": "Open-source programs that run on the desktop regardless of which operating system sits underneath them.",
+      "children": [
+        {
+          "name": "GIMP",
+          "description": "The GNU Image Manipulation Program: a free raster image editor for photo retouching, drawing and format conversion. Around since 1996, and still the flagship open-source alternative to Photoshop.",
+          "url": "https://www.gimp.org/"
+        }
+      ]
     }
   ]
 }
