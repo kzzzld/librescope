@@ -1,11 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { THEMES } from '../themes'
+import { VIEW_MODES, type ViewMode } from '../preferences'
 
 interface SettingsDialogProps {
   open: boolean
   onClose: () => void
   theme: string
   onThemeChange: (id: string) => void
+  viewMode: ViewMode
+  onViewModeChange: (mode: ViewMode) => void
 }
 
 /**
@@ -17,6 +20,8 @@ export default function SettingsDialog({
   onClose,
   theme,
   onThemeChange,
+  viewMode,
+  onViewModeChange,
 }: SettingsDialogProps) {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
@@ -52,6 +57,34 @@ export default function SettingsDialog({
             ×
           </button>
         </header>
+
+        <section className="settings__section">
+          <h3 className="settings__section-title" id="settings-layout">
+            Layout
+          </h3>
+          <div
+            className="choice-grid"
+            role="radiogroup"
+            aria-labelledby="settings-layout"
+          >
+            {VIEW_MODES.map((mode) => {
+              const active = mode.id === viewMode
+              return (
+                <button
+                  key={mode.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  className={active ? 'choice is-active' : 'choice'}
+                  onClick={() => onViewModeChange(mode.id)}
+                >
+                  <span className="choice__label">{mode.label}</span>
+                  <span className="choice__hint">{mode.hint}</span>
+                </button>
+              )
+            })}
+          </div>
+        </section>
 
         <section className="settings__section">
           <h3 className="settings__section-title" id="settings-theme">

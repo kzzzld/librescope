@@ -1,4 +1,4 @@
-import type { Graph, GraphEdge, GraphNode, TreeNode } from '../types'
+import type { Graph, GraphEdge, GraphNode, OutlineNode, TreeNode } from '../types'
 
 const SEPARATOR = '\u0000'
 const PATH_SEPARATOR = '/'
@@ -23,6 +23,7 @@ function nodePath(name: string, parentPath: string | null): string {
  * - One edge per parent → child relationship (duplicates and self-loops dropped).
  * - `degree` counts a node's distinct edges, `depth` its distance from the root,
  *   and `isShared` marks nodes referenced from more than one place in the tree.
+ * - The original hierarchy is also returned as `outline`, for the tree view.
  */
 export function buildGraph(tree: TreeNode): Graph {
   const byKey = new Map<string, GraphNode>()
@@ -80,10 +81,10 @@ export function buildGraph(tree: TreeNode): Graph {
     parentKey: string | null,
     parentPath: string | null,
     depth: number,
-  ): void {
-    if (!current) return
+  ): OutlineNode | null {
+    if (!current) return null
     const name = typeof current.name === 'string' ? current.name.trim() : ''
-    if (!name) return
+    if (!name) return null
 
     const description =
       typeof current.description === 'string' ? current.description.trim() : ''
@@ -98,11 +99,18 @@ export function buildGraph(tree: TreeNode): Graph {
     node.isShared = node.occurrences > 1
 
     if (parent) link(parent, node)
-    for (const child of current.children ?? []) walk(child, node, key, path, depth + 1)
+
+    const children: OutlineNode[] = []
+    for (const child of current.children ?? []) {
+      const outline = walk(child, node, key, path, depth + 1)
+      if (outline) children.push(outline)
+    }
+
+    return { node, children }
   }
 
-  walk(tree, null, null, null, 0)
-  return { nodes, edges }
+  const root = walk(tree, null, null, null, 0)
+  return { nodes, edges, outline: root ? [root] : [] }
 }
 
 /** Fetch the tree from `url` and derive its graph. */

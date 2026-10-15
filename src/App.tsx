@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import GraphView from './components/Graph'
 import NodePanel from './components/NodePanel'
 import SettingsDialog from './components/SettingsDialog'
+import TreeView from './components/TreeView'
 import { fetchGraph } from './lib/graph'
+import { readStoredViewMode, storeViewMode, type ViewMode } from './preferences'
 import { applyTheme, readStoredTheme } from './themes'
 import type { Graph } from './types'
 
@@ -13,12 +15,17 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [theme, setTheme] = useState<string>(readStoredTheme)
+  const [viewMode, setViewMode] = useState<ViewMode>(readStoredViewMode)
   const [size, setSize] = useState({ width: 0, height: 0 })
   const stageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     applyTheme(theme)
   }, [theme])
+
+  useEffect(() => {
+    storeViewMode(viewMode)
+  }, [viewMode])
 
   useEffect(() => {
     let cancelled = false
@@ -83,7 +90,11 @@ export default function App() {
       <header className="app__header">
         <div className="app__heading">
           <h1 className="app__title">LibreScope</h1>
-          <p className="app__hint">Drag to pan · scroll to zoom · drag a node · click for details</p>
+          <p className="app__hint">
+            {viewMode === 'graph'
+              ? 'Drag to pan · scroll to zoom · drag a node · click for details'
+              : 'Click a node for details'}
+          </p>
         </div>
         <button
           type="button"
@@ -117,7 +128,7 @@ export default function App() {
             </p>
           ) : null}
           {!error && !graph ? <p className="app__message">Loading…</p> : null}
-          {graph && hasSize ? (
+          {graph && viewMode === 'graph' && hasSize ? (
             <GraphView
               graph={graph}
               width={size.width}
@@ -126,6 +137,14 @@ export default function App() {
               selectedId={selectedId}
               onHover={handleHover}
               onSelect={handleSelect}
+            />
+          ) : null}
+          {graph && viewMode === 'tree' ? (
+            <TreeView
+              outline={graph.outline}
+              activeId={hoveredId ?? selectedId}
+              onSelect={handleSelect}
+              onHover={handleHover}
             />
           ) : null}
         </div>
@@ -149,10 +168,12 @@ export default function App() {
           <i className="legend__dot legend__dot--shared" />
           shared node (name in 2+ branches)
         </span>
-        <span className="legend__item">
-          <i className="legend__line" />
-          parent → child edge
-        </span>
+        {viewMode === 'graph' ? (
+          <span className="legend__item">
+            <i className="legend__line" />
+            parent → child edge
+          </span>
+        ) : null}
       </footer>
 
       <SettingsDialog
@@ -160,6 +181,8 @@ export default function App() {
         onClose={closeSettings}
         theme={theme}
         onThemeChange={setTheme}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
     </div>
   )

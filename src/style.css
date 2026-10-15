@@ -480,12 +480,60 @@ body {
   font-weight: 600;
 }
 
+.settings__section + .settings__section {
+  margin-top: 22px;
+}
+
 .settings__section-title {
   margin: 0 0 10px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--muted);
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  font: inherit;
+  text-align: left;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.choice:hover {
+  background: var(--hover-surface);
+}
+
+.choice.is-active {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.choice:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.choice__label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.choice__hint {
+  font-size: 11px;
   color: var(--muted);
 }
 
@@ -538,6 +586,76 @@ body {
 .theme-option__label {
   font-size: 12px;
   line-height: 1.3;
+}
+
+/* --- tree view --------------------------------------------------------- */
+
+.tree {
+  position: absolute;
+  inset: 0;
+  padding: 14px 20px 26px;
+  overflow: auto;
+}
+
+.tree__list {
+  margin: 0;
+  padding: 0 0 0 20px;
+  list-style: none;
+  border-left: 1px solid var(--border);
+}
+
+.tree__list--root {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.tree__item {
+  margin: 0;
+}
+
+.tree__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  color: var(--fg);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tree__row:hover {
+  background: var(--hover-surface);
+}
+
+.tree__row.is-active {
+  background: var(--accent-soft);
+}
+
+.tree__row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.tree__dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--node);
+}
+
+.tree__dot.is-shared {
+  background: var(--node-shared);
+}
+
+.tree__name {
+  min-width: 0;
 }
 
 /* --- graph ------------------------------------------------------------- */

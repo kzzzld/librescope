@@ -64,8 +64,20 @@ export interface GraphEdge {
   target: GraphNode
 }
 
-/** The derived graph: unique nodes plus their automatically created edges. */
+/**
+ * The document hierarchy, as the tree view renders it. A node that was merged
+ * still appears in every place it was written, so `rpm` shows up under both
+ * Fedora and openSUSE.
+ */
+export interface OutlineNode {
+  node: GraphNode
+  children: OutlineNode[]
+}
+
+/** The derived graph: unique nodes, their edges, and the document outline. */
 export interface Graph {
   nodes: GraphNode[]
   edges: GraphEdge[]
+  /** Top-level outline entries — one per root, which is one today. */
+  outline: OutlineNode[]
 }
