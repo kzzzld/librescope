@@ -171,9 +171,152 @@
       "description": "Open-source programs that run on the desktop regardless of which operating system sits underneath them.",
       "children": [
         {
-          "name": "GIMP",
-          "description": "The GNU Image Manipulation Program: a free raster image editor for photo retouching, drawing and format conversion. Around since 1996, and still the flagship open-source alternative to Photoshop.",
-          "url": "https://www.gimp.org/"
+          "name": "Office",
+          "description": "Suites for documents, spreadsheets and presentations — the category where open source became a practical alternative to Microsoft Office.",
+          "children": [
+            {
+              "name": "libreoffice",
+              "description": "The Document Foundation's office suite: word processor, spreadsheet, presentations, drawing and databases. Shipped by most Linux distributions, and a direct descendant of OpenOffice.org.",
+              "url": "https://www.libreoffice.org/"
+            },
+            {
+              "name": "onlyoffice",
+              "description": "An office suite with unusually high Microsoft Office format fidelity, and a self-hosted collaboration server. Its editors are also embedded in Nextcloud and similar platforms.",
+              "url": "https://www.onlyoffice.com/"
+            },
+            {
+              "name": "openoffice",
+              "description": "Apache OpenOffice, the suite LibreOffice forked from in 2010. Development has since slowed to a crawl, and most of its users have moved to LibreOffice.",
+              "url": "https://www.openoffice.org/"
+            }
+          ]
+        },
+        {
+          "name": "Media",
+          "description": "Players and editors for video and audio.",
+          "children": [
+            {
+              "name": "vlc",
+              "description": "VideoLAN's media player. It plays practically any format without extra codecs, on virtually every platform, and is one of the most-installed open-source programs there is.",
+              "url": "https://www.videolan.org/vlc/"
+            },
+            {
+              "name": "mpv",
+              "description": "A minimalist, keyboard-driven media player descended from MPlayer. Scriptable, and favoured by people who would rather configure playback in a file than click through menus.",
+              "url": "https://mpv.io/"
+            },
+            {
+              "name": "shotcut",
+              "description": "A cross-platform non-linear video editor built on FFmpeg. It supports a wide range of formats with no import step.",
+              "url": "https://www.shotcut.org/"
+            },
+            {
+              "name": "kdenlive",
+              "description": "KDE's non-linear video editor, with multi-track editing and a broad effects set. One of the most mature open-source options for editing video.",
+              "url": "https://kdenlive.org/"
+            }
+          ]
+        },
+        {
+          "name": "Graphics",
+          "description": "Tools for images, drawing and illustration.",
+          "children": [
+            {
+              "name": "GIMP",
+              "description": "The GNU Image Manipulation Program: a free raster image editor for photo retouching, drawing and format conversion. Around since 1996, and still the flagship open-source alternative to Photoshop.",
+              "url": "https://www.gimp.org/"
+            }
+          ]
+        },
+        {
+          "name": "Browsers",
+          "description": "Programs for browsing the web.",
+          "children": [
+            {
+              "name": "firefox",
+              "description": "Mozilla's browser, and for years the main counterweight to Internet Explorer and Chrome. Gecko is the only major browser engine not controlled by Google or Apple.",
+              "url": "https://www.mozilla.org/firefox/"
+            },
+            {
+              "name": "librewolf",
+              "description": "A privacy-hardened fork of Firefox: telemetry removed, tracking protections tightened, and no sponsored content. Maintained independently of Mozilla.",
+              "url": "https://librewolf.net/"
+            },
+            {
+              "name": "helium",
+              "description": "A lightweight Chromium-based browser that strips out Google's services and telemetry while keeping the engine. Much newer and smaller than the established alternatives.",
+              "url": "https://helium.computer/"
+            },
+            {
+              "name": "brave",
+              "description": "A Chromium-based browser built around blocking ads and trackers by default. It funds itself through its own ad programme and a crypto token.",
+              "url": "https://brave.com/"
+            }
+          ]
+        },
+        {
+          "name": "Mail",
+          "description": "Email clients.",
+          "children": [
+            {
+              "name": "thunderbird",
+              "description": "Mozilla's email, calendar and news client. Like Firefox, it moved under a separate corporation so that it could fund its own development.",
+              "url": "https://www.thunderbird.net/"
+            }
+          ]
+        },
+        {
+          "name": "Security",
+          "description": "Password managers, and the servers that can back them.",
+          "children": [
+            {
+              "name": "keepassxc",
+              "description": "A cross-platform password manager that keeps your database in a local file you own. It reads the KeePass format, so other clients can open the same vault.",
+              "url": "https://keepassxc.org/"
+            },
+            {
+              "name": "bitwarden",
+              "description": "An open-source password manager with both hosted and self-hosted options. Popular with teams because the clients, server and audit tooling are all open.",
+              "url": "https://bitwarden.com/"
+            },
+            {
+              "name": "vaultwarden",
+              "description": "An unofficial, resource-light reimplementation of the Bitwarden server in Rust. Most Bitwarden clients work against it, which makes self-hosting cheap.",
+              "url": "https://github.com/dani-garcia/vaultwarden"
+            }
+          ]
+        },
+        {
+          "name": "File sharing",
+          "description": "Peer-to-peer and file transfer tools.",
+          "children": [
+            {
+              "name": "qbittorrent",
+              "description": "A BitTorrent client with a deliberately plain interface and a built-in web UI. One of the most widely used clients on Linux.",
+              "url": "https://www.qbittorrent.org/"
+            }
+          ]
+        },
+        {
+          "name": "Editors",
+          "description": "Terminal text and code editors.",
+          "children": [
+            {
+              "name": "vim",
+              "description": "Bram Moolenaar's vi improved, a modal editor found on nearly every Unix system. Its keybindings are so widespread that other tools imitate them.",
+              "url": "https://www.vim.org/"
+            },
+            {
+              "name": "neovim",
+              "description": "A refactor of Vim that moves it forward with asynchronous plugins, Lua configuration and an embeddable core. Popular enough that many users now treat Vim as the legacy option.",
+              "url": "https://neovim.io/"
+            },
+            {
+              "name": "helix",
+              "description": "A modal editor written in Rust, with multiple selections as a first-class idea and language servers built in. Configuration is TOML rather than a scripting language.",
+              "url": "https://helix-editor.com/"
+            }
+          ]
         }
       ]
     }
