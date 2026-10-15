@@ -29,12 +29,13 @@ derived automatically from the hierarchy rather than being written by hand.
 
 ## Data format (`public/data.json`)
 
-A nested tree of nodes. Each node has a `name`, optional `children`, and an
-optional `id`:
+A nested tree of nodes. Each node has a `name`, optional `children`, and
+optional `id` and `description`:
 
 ```json
 {
   "name": "Desktop",
+  "description": "What Desktop means in this graph.",
   "children": [
     { "name": "Linux", "children": [{ "name": "Init Systems", "children": [] }] },
     { "name": "rpm", "id": "rpm" }
@@ -50,6 +51,9 @@ Rules:
 - **An explicit `id` overrides the path.** Give the same `id` to a node in two
   places to merge them into one shared node — that is how `rpm` stays a single
   hub under both Fedora and openSUSE.
+- **`description` is optional prose** shown in the side panel when the node is
+  selected. A sentence or two is plenty. For a merged node the first occurrence
+  wins.
 - One edge per **parent → child** relationship. Edges are never written by hand.
 - Renaming a `name` changes its path, so it re-wires that branch.
 

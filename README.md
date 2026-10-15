@@ -7,11 +7,12 @@ JSON tree — you write the hierarchy, LibreScope draws the graph.
 ## Data
 
 Edit `public/data.json`. It is a nested tree where each node has a `name`,
-optional `children`, and an optional `id`:
+optional `children`, and an optional `id` and `description`:
 
 ```json
 {
   "name": "Desktop",
+  "description": "Desktop computing, and the two families under it.",
   "children": [
     {
       "name": "Linux",
@@ -26,6 +27,7 @@ optional `children`, and an optional `id`:
   Linux and `Distros` under BSD are distinct.
 - Add an **`id`** to override that and merge nodes across branches. `rpm` carries
   `"id": "rpm"` under both Fedora and openSUSE, which makes it one shared hub.
+- Add a **`description`** to show prose in the side panel for that node.
 - Every parent → child pair becomes an edge. You never write edges yourself.
 
 Because the graph is built from the file itself, no rebuild is needed: edit
@@ -52,4 +54,7 @@ Then open the printed local URL.
 
 - Drag the background to pan, scroll to zoom.
 - Drag a node to move it; the simulation rebalances around it.
-- Hover or select a node to highlight its neighbours.
+- Hover a node to highlight its neighbours.
+- Click a node to open a side panel with its description and connections; click a
+  connection in the panel to jump to it, or press × to close.
+- Node size follows hierarchy depth: the root is largest, leaves are smallest.
