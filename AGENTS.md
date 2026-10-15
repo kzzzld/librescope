@@ -40,6 +40,9 @@ derived automatically from the hierarchy rather than being written by hand.
   (pan/zoom) and `d3-drag` (node dragging).
 - The force simulation ticks mutate SVG attributes via refs; React state is
   reserved for hover/selection. Do not push per-tick positions into React state.
+- App chrome lives in `src/components/`: `NodePanel.tsx` is the node side panel
+  and `SettingsDialog.tsx` is the settings popup, opened from the header gear.
+  The settings dialog is intentionally empty — add options there when asked.
 
 ## Data format (`public/data.json`)
 

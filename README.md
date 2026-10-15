@@ -58,3 +58,5 @@ Then open the printed local URL.
 - Click a node to open a side panel with its description and connections; click a
   connection in the panel to jump to it, or press × to close.
 - Node size follows hierarchy depth: the root is largest, leaves are smallest.
+- Open **Settings** from the gear button in the header. The popup is empty for
+  now; Escape, the × button or a click outside close it.
