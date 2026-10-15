@@ -5,6 +5,9 @@ node_modules
 dist
 dist-ssr
 
+# typescript incremental build info
+*.tsbuildinfo
+
 # local env / editor
 *.local
 .vite
