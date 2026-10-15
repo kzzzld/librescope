@@ -2,6 +2,20 @@
 
 Guidance for agents working in this repository.
 
+## Introduction
+
+LibreScope is deliberately code-light: the app is a generic viewer and nearly
+all of its substance lives in `public/data.json`. **When asked to extend, fix or
+enrich the graph, your first move is to add to `public/data.json` — not to write
+more code.**
+
+Adding a topic is a data edit, not a programming task: put it under the right
+parent, give it a `name` and a `description`, and add an `id` only when it must
+merge with a node elsewhere. Reach for `src/` only when the request genuinely
+cannot be expressed as data — a new interaction, a new field, a layout change.
+
+Either way, commit the change.
+
 ## Project
 
 LibreScope is a web app for exploring the open-source ecosystem as an interactive
@@ -56,6 +70,25 @@ Rules:
   wins.
 - One edge per **parent → child** relationship. Edges are never written by hand.
 - Renaming a `name` changes its path, so it re-wires that branch.
+
+### Adding content
+
+To add a topic — a language, a package manager, a distro, a project:
+
+1. Find the parent it belongs under. Identity is the path, so **where you put it
+   is its name in the graph** (`Desktop/Linux/Distros/Debian`).
+2. Add `{ "name": "...", "description": "..." }` to that parent's `children`,
+   creating `children` if it has none. Match the existing 2-space indentation and
+   comma style.
+3. Write the `description` as one or two sentences of plain prose: what the thing
+   is and why it belongs here. No marketing, no bullet lists.
+4. Add `"id": "..."` only when the same thing genuinely belongs to two branches
+   and should be one shared node, like `rpm`.
+5. Confirm the JSON still parses (`node -e "JSON.parse(require('fs').readFileSync('public/data.json'))"`),
+   then commit.
+
+Do not add edges — they come from the tree structure. Do not invent fields: the
+whole vocabulary is `name`, `id`, `description` and `children`.
 
 ## Commands
 
