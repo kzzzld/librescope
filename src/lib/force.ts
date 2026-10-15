@@ -11,9 +11,18 @@ import type { Graph, GraphEdge, GraphNode } from '../types'
 /** Golden angle, used to spread seeded nodes evenly without clumping. */
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
 
-/** Visual radius of a node: bigger hubs get bigger circles. */
+/** Radius of the root node. Every level deeper shrinks by `DEPTH_STEP`. */
+const ROOT_RADIUS = 15
+const DEPTH_STEP = 2.5
+const MIN_RADIUS = 5
+
+/**
+ * Visual radius of a node. Hierarchy drives size: the root is the largest and
+ * each level deeper is smaller, so `Desktop` is big while leaves like `apt`
+ * and `zypper` are small.
+ */
 export function nodeRadius(node: GraphNode): number {
-  return 6 + node.degree * 2.4
+  return Math.max(MIN_RADIUS, ROOT_RADIUS - node.depth * DEPTH_STEP)
 }
 
 export interface SimulationSize {

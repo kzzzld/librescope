@@ -21,8 +21,8 @@ function nodePath(name: string, parentPath: string | null): string {
  *   So `Linux/Distros` and `BSD/Distros` are two nodes, while two nodes both
  *   carrying `id: "rpm"` merge into a single shared node.
  * - One edge per parent → child relationship (duplicates and self-loops dropped).
- * - `degree` counts a node's distinct edges; `isShared` marks nodes referenced
- *   from more than one place in the tree.
+ * - `degree` counts a node's distinct edges, `depth` its distance from the root,
+ *   and `isShared` marks nodes referenced from more than one place in the tree.
  */
 export function buildGraph(tree: TreeNode): Graph {
   const byKey = new Map<string, GraphNode>()
@@ -30,19 +30,24 @@ export function buildGraph(tree: TreeNode): Graph {
   const edges: GraphEdge[] = []
   const seenEdges = new Set<string>()
 
-  function ensure(key: string, name: string, path: string): GraphNode {
+  function ensure(key: string, name: string, path: string, depth: number): GraphNode {
     let node = byKey.get(key)
     if (!node) {
       node = {
         id: key,
         name,
         path,
+        depth,
         degree: 0,
         occurrences: 0,
         isShared: false,
       }
       byKey.set(key, node)
       nodes.push(node)
+    } else if (depth < node.depth) {
+      // A merged node sits at its shallowest appearance, so it never renders
+      // smaller than the level it was first seen at.
+      node.depth = depth
     }
     return node
   }
@@ -62,6 +67,7 @@ export function buildGraph(tree: TreeNode): Graph {
     parent: GraphNode | null,
     parentKey: string | null,
     parentPath: string | null,
+    depth: number,
   ): void {
     if (!current) return
     const name = typeof current.name === 'string' ? current.name.trim() : ''
@@ -69,15 +75,15 @@ export function buildGraph(tree: TreeNode): Graph {
 
     const key = nodeKey(current, name, parentKey)
     const path = nodePath(name, parentPath)
-    const node = ensure(key, name, path)
+    const node = ensure(key, name, path, depth)
     node.occurrences += 1
     node.isShared = node.occurrences > 1
 
     if (parent) link(parent, node)
-    for (const child of current.children ?? []) walk(child, node, key, path)
+    for (const child of current.children ?? []) walk(child, node, key, path, depth + 1)
   }
 
-  walk(tree, null, null, null)
+  walk(tree, null, null, null, 0)
   return { nodes, edges }
 }
 

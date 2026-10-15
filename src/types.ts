@@ -34,6 +34,8 @@ export interface GraphNode extends SimulationNodeDatum {
   name: string
   /** Path from the root, e.g. `Desktop/Linux/Distros`. */
   path: string
+  /** Distance from the root: the root is 0, its children are 1, and so on. */
+  depth: number
   /** Number of distinct edges touching this node. */
   degree: number
   /** How many times the tree referenced this node (2+ means merged/shared). */
