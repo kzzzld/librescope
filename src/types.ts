@@ -1,29 +1,44 @@
 import type { SimulationNodeDatum } from 'd3-force'
 
 /**
- * A node as written in `public/data.json`: a name and optional children.
+ * A node as written in `public/data.json`: a name, optional children, and an
+ * optional `id` that overrides the node's identity.
+ *
  * The tree is the only source of truth — edges are never written by hand.
  */
 export interface TreeNode {
   name: string
+  /**
+   * Identity override. Without it a node is identified by its path from the
+   * root (e.g. `Desktop/Linux/Distros`). Give the same `id` to a node in two
+   * places to make them one shared node (e.g. `rpm` under Fedora and openSUSE).
+   */
+  id?: string
   children?: TreeNode[]
 }
 
 /**
- * A node in the derived graph. One per unique name in the tree, so a repeated
- * name (e.g. `rpm` under Fedora and openSUSE) becomes a single shared node.
+ * A node in the derived graph.
+ *
+ * Identity is the node's `id` when the data provides one, otherwise its path
+ * from the root (`Desktop/Linux/Distros`). Two nodes sharing an `id` collapse
+ * into one shared node, which is how `rpm` stays a single hub under both Fedora
+ * and openSUSE while the two `Distros` nodes stay separate.
  *
  * Extends `SimulationNodeDatum` so d3-force can write `x`, `y`, `vx`, `vy`.
  */
 export interface GraphNode extends SimulationNodeDatum {
-  /** Identity of the node — its unique name. */
+  /** Identity key: the explicit `id`, or the path from the root. */
   id: string
+  /** Display label, taken from the first occurrence of this node. */
   name: string
+  /** Path from the root, e.g. `Desktop/Linux/Distros`. */
+  path: string
   /** Number of distinct edges touching this node. */
   degree: number
-  /** How many times the name appears in the tree (2+ means shared). */
+  /** How many times the tree referenced this node (2+ means merged/shared). */
   occurrences: number
-  /** True when the name appears in more than one branch. */
+  /** True when the node was referenced from more than one place. */
   isShared: boolean
 }
 

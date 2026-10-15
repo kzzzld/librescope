@@ -1,26 +1,47 @@
 import type { Graph, GraphEdge, GraphNode, TreeNode } from '../types'
 
 const SEPARATOR = '\u0000'
+const PATH_SEPARATOR = '/'
+
+/** Identity of a tree node: its explicit `id`, or its path from the root. */
+function nodeKey(node: TreeNode, name: string, parentKey: string | null): string {
+  if (typeof node.id === 'string' && node.id.trim() !== '') return node.id.trim()
+  return parentKey === null ? name : `${parentKey}${PATH_SEPARATOR}${name}`
+}
+
+/** Path of a tree node from the root, ignoring any `id` overrides. */
+function nodePath(name: string, parentPath: string | null): string {
+  return parentPath === null ? name : `${parentPath}${PATH_SEPARATOR}${name}`
+}
 
 /**
  * Derive a graph from a nested tree.
  *
- * - One node per unique name; repeated names merge into a single shared node.
+ * - Identity is the node's `id` when given, otherwise its path from the root.
+ *   So `Linux/Distros` and `BSD/Distros` are two nodes, while two nodes both
+ *   carrying `id: "rpm"` merge into a single shared node.
  * - One edge per parent → child relationship (duplicates and self-loops dropped).
- * - Every node's `degree` counts its distinct edges, and `isShared` marks names
- *   that appear in more than one branch.
+ * - `degree` counts a node's distinct edges; `isShared` marks nodes referenced
+ *   from more than one place in the tree.
  */
 export function buildGraph(tree: TreeNode): Graph {
-  const byName = new Map<string, GraphNode>()
+  const byKey = new Map<string, GraphNode>()
   const nodes: GraphNode[] = []
   const edges: GraphEdge[] = []
   const seenEdges = new Set<string>()
 
-  function ensure(name: string): GraphNode {
-    let node = byName.get(name)
+  function ensure(key: string, name: string, path: string): GraphNode {
+    let node = byKey.get(key)
     if (!node) {
-      node = { id: name, name, degree: 0, occurrences: 0, isShared: false }
-      byName.set(name, node)
+      node = {
+        id: key,
+        name,
+        path,
+        degree: 0,
+        occurrences: 0,
+        isShared: false,
+      }
+      byKey.set(key, node)
       nodes.push(node)
     }
     return node
@@ -36,20 +57,27 @@ export function buildGraph(tree: TreeNode): Graph {
     child.degree += 1
   }
 
-  function walk(current: TreeNode | undefined, parent: GraphNode | null): void {
+  function walk(
+    current: TreeNode | undefined,
+    parent: GraphNode | null,
+    parentKey: string | null,
+    parentPath: string | null,
+  ): void {
     if (!current) return
     const name = typeof current.name === 'string' ? current.name.trim() : ''
     if (!name) return
 
-    const node = ensure(name)
+    const key = nodeKey(current, name, parentKey)
+    const path = nodePath(name, parentPath)
+    const node = ensure(key, name, path)
     node.occurrences += 1
     node.isShared = node.occurrences > 1
 
     if (parent) link(parent, node)
-    for (const child of current.children ?? []) walk(child, node)
+    for (const child of current.children ?? []) walk(child, node, key, path)
   }
 
-  walk(tree, null)
+  walk(tree, null, null, null)
   return { nodes, edges }
 }
 

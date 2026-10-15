@@ -22,11 +22,11 @@
             },
             {
               "name": "Fedora",
-              "children": [{ "name": "rpm" }, { "name": "dnf" }]
+              "children": [{ "name": "rpm", "id": "rpm" }, { "name": "dnf" }]
             },
             {
               "name": "openSUSE",
-              "children": [{ "name": "rpm" }, { "name": "zypper" }]
+              "children": [{ "name": "rpm", "id": "rpm" }, { "name": "zypper" }]
             }
           ]
         }
