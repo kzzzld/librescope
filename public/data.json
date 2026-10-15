@@ -107,12 +107,26 @@
             {
               "name": "OpenBSD",
               "description": "Focused on security and correctness, with a famously thorough audit of its code. It gave the world OpenSSH and the PF firewall.",
-              "url": "https://www.openbsd.org/"
+              "url": "https://www.openbsd.org/",
+              "children": [
+                {
+                  "name": "pkg_add",
+                  "description": "OpenBSD's package tool. pkg_add installs prebuilt binary packages from the project's official mirrors and pkg_delete removes them; the Ports tree builds the same software from source.",
+                  "url": "https://man.openbsd.org/pkg_add"
+                }
+              ]
             },
             {
               "name": "NetBSD",
               "description": "Portability above all — it runs on more hardware architectures than any other operating system, and keeps a clean, well-structured codebase while doing it.",
-              "url": "https://www.netbsd.org/"
+              "url": "https://www.netbsd.org/",
+              "children": [
+                {
+                  "name": "pkgin",
+                  "description": "A binary package manager for pkgsrc with an apt-style interface, and the usual way to install prebuilt packages on NetBSD.",
+                  "url": "https://pkgin.net/"
+                }
+              ]
             }
           ]
         }
