@@ -6,8 +6,8 @@ JSON tree — you write the hierarchy, LibreScope draws the graph.
 
 ## Data
 
-Edit `public/data.json`. It is a nested tree where each node has a `name` and
-optional `children`:
+Edit `public/data.json`. It is a nested tree where each node has a `name`,
+optional `children`, and an optional `id`:
 
 ```json
 {
@@ -21,11 +21,14 @@ optional `children`:
 }
 ```
 
-- One node per unique name; a repeated name (like `rpm` under Fedora and openSUSE)
-  becomes a single shared node.
+- A node is identified by its **path from the root** (`Desktop/Linux/Distros`),
+  so the same name in two branches stays as two separate nodes — `Distros` under
+  Linux and `Distros` under BSD are distinct.
+- Add an **`id`** to override that and merge nodes across branches. `rpm` carries
+  `"id": "rpm"` under both Fedora and openSUSE, which makes it one shared hub.
 - Every parent → child pair becomes an edge. You never write edges yourself.
 
-Because the graph is built from the file names, no rebuild is needed: edit
+Because the graph is built from the file itself, no rebuild is needed: edit
 `public/data.json`, save, and the running dev server picks it up.
 
 ## Getting started
