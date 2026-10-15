@@ -84,24 +84,64 @@ no `npmDepsHash` to refresh when dependencies move.
 
 **Deploy on NixOS**
 
-The flake exports a NixOS module, so a configuration only needs:
+The flake exports a NixOS module. Add this repository as an input and import it:
 
 ```nix
 {
-  inputs.librescope.url = "github:<you>/librescope";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    librescope.url = "git+ssh://forgejo@git.kzzzl.xyz/kzzzl/LibreScope.git";
+  };
 
-  # configuration.nix
-  services.librescope = {
-    enable = true;
-    port = 5555;          # default: 5555
-    openFirewall = true;  # default: false
+  outputs = { self, nixpkgs, librescope, ... }: {
+    nixosConfigurations.vps = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        librescope.nixosModules.default
+        {
+          services.librescope = {
+            enable = true;
+            hostName = "librescope.example.com";
+            enableACME = true;
+            forceSSL = true;
+          };
+        }
+      ];
+    };
   };
 }
 ```
 
-It serves the built site with nginx, so enabling it also turns on
-`services.nginx`. Point `services.librescope.package` somewhere else to override
-what gets served.
+Options: `enable`, `package`, `hostName`, `port` (default 5555), `enableACME`,
+`forceSSL`, `openFirewall`. Leave `hostName`/`enableACME` out for plain HTTP on
+`port`; set them for a certificate. `enableACME` needs two other things in the
+system configuration:
+
+```nix
+security.acme = {
+  acceptTerms = true;                          # required by the ACME module
+  defaults.email = "you@example.com";
+};
+```
+
+Then point a DNS record at the VPS, make sure ports 80 and 443 reach it (the
+module opens them in the firewall itself), and rebuild on the box:
+
+```bash
+sudo nixos-rebuild switch --flake ~/nix#vps
+```
+
+Two practical notes. `nixos-rebuild` fetches the flake as root, so root needs
+read access to a private repository — a deploy key on the forge, a public repo,
+or a local clone referenced with `url = "path:/srv/librescope"`. And the input is
+pinned in your config's `flake.lock`, so use `nix flake update librescope` to
+pick up new commits rather than expecting them automatically.
+
+If you'd rather not pull a second nixpkgs, add
+`inputs.librescope.inputs.nixpkgs.follows = "nixpkgs"` — your own nixpkgs then
+builds the app, which requires it to be recent enough to provide
+`importNpmLock`.
 
 ## Interactions
 
