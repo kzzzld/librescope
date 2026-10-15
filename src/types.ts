@@ -16,6 +16,11 @@ export interface TreeNode {
   id?: string
   /** Prose shown in the side panel when the node is selected. */
   description?: string
+  /**
+   * Official website. Omit it entirely when the thing has no home page of its
+   * own (the app simply shows no link). Values are plain `https://` URLs.
+   */
+  url?: string
   children?: TreeNode[]
 }
 
@@ -36,6 +41,8 @@ export interface GraphNode extends SimulationNodeDatum {
   name: string
   /** Prose shown in the side panel, taken from the first occurrence. */
   description: string
+  /** Official website, when the node has one. Undefined means no link. */
+  url?: string
   /** Path from the root, e.g. `Desktop/Linux/Distros`. */
   path: string
   /** Distance from the root: the root is 0, its children are 1, and so on. */

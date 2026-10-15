@@ -34,6 +34,7 @@ export function buildGraph(tree: TreeNode): Graph {
     key: string,
     name: string,
     description: string,
+    url: string | undefined,
     path: string,
     depth: number,
   ): GraphNode {
@@ -43,6 +44,7 @@ export function buildGraph(tree: TreeNode): Graph {
         id: key,
         name,
         description,
+        url,
         path,
         depth,
         degree: 0,
@@ -53,10 +55,11 @@ export function buildGraph(tree: TreeNode): Graph {
       nodes.push(node)
     } else {
       // A merged node sits at its shallowest appearance, so it never renders
-      // smaller than the level it was first seen at. Fill in a description if
-      // the first occurrence did not carry one.
+      // smaller than the level it was first seen at. Fill in a description or a
+      // website if the first occurrence did not carry one.
       if (depth < node.depth) node.depth = depth
       if (!node.description && description) node.description = description
+      if (!node.url && url) node.url = url
     }
     return node
   }
@@ -84,9 +87,13 @@ export function buildGraph(tree: TreeNode): Graph {
 
     const description =
       typeof current.description === 'string' ? current.description.trim() : ''
+    const url =
+      typeof current.url === 'string' && current.url.trim() !== ''
+        ? current.url.trim()
+        : undefined
     const key = nodeKey(current, name, parentKey)
     const path = nodePath(name, parentPath)
-    const node = ensure(key, name, description, path, depth)
+    const node = ensure(key, name, description, url, path, depth)
     node.occurrences += 1
     node.isShared = node.occurrences > 1
 

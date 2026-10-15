@@ -7,6 +7,15 @@ interface NodePanelProps {
   onClose: () => void
 }
 
+/** Hostname without a leading `www.`, used as a tidy link label. */
+function linkLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
+}
+
 /** Side panel describing the selected node and linking to its neighbours. */
 export default function NodePanel({ node, neighbours, onSelect, onClose }: NodePanelProps) {
   const breadcrumb = node.path.split('/').join(' › ')
@@ -30,6 +39,32 @@ export default function NodePanel({ node, neighbours, onSelect, onClose }: NodeP
       ) : null}
 
       <p className="panel__description">{node.description || 'No description yet.'}</p>
+
+      {node.url ? (
+        <a
+          className="panel__website"
+          href={node.url}
+          target="_blank"
+          rel="noreferrer noopener"
+          title={node.url}
+        >
+          {linkLabel(node.url)}
+          <svg
+            viewBox="0 0 24 24"
+            width="13"
+            height="13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17 17 7" />
+            <path d="M8 7h9v9" />
+          </svg>
+        </a>
+      ) : null}
 
       {neighbours.length > 0 ? (
         <section className="panel__section">

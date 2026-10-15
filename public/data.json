@@ -5,6 +5,7 @@
     {
       "name": "Linux",
       "description": "An operating system kernel started by Linus Torvalds in 1991 and released under the GPLv2. Around it grew the largest open-source ecosystem: it runs most of the world's servers, every Android phone, and a sizeable share of desktops.",
+      "url": "https://www.kernel.org/",
       "children": [
         {
           "name": "Init Systems",
@@ -12,19 +13,23 @@
           "children": [
             {
               "name": "systemd",
-              "description": "The dominant init system and service manager, introduced by Lennart Poettering in 2010. It handles boot, services, timers and logging through journald — powerful, and often criticised for how much it absorbs."
+              "description": "The dominant init system and service manager, introduced by Lennart Poettering in 2010. It handles boot, services, timers and logging through journald — powerful, and often criticised for how much it absorbs.",
+              "url": "https://systemd.io/"
             },
             {
               "name": "runit",
-              "description": "A minimal init and process-supervision suite. Small, fast and easy to reason about; it is the default init in Void Linux."
+              "description": "A minimal init and process-supervision suite. Small, fast and easy to reason about; it is the default init in Void Linux.",
+              "url": "http://smarden.org/runit/"
             },
             {
               "name": "s6",
-              "description": "A supervision suite by Laurent Bercot, built from small, composable tools. Favoured by distributions such as Artix and Obarun that want supervision without systemd."
+              "description": "A supervision suite by Laurent Bercot, built from small, composable tools. Favoured by distributions such as Artix and Obarun that want supervision without systemd.",
+              "url": "https://skarnet.org/software/s6/"
             },
             {
               "name": "openrc",
-              "description": "A dependency-based init system used by Gentoo and Alpine Linux. It keeps the classic SysV-style script model while adding proper dependency handling."
+              "description": "A dependency-based init system used by Gentoo and Alpine Linux. It keeps the classic SysV-style script model while adding proper dependency handling.",
+              "url": "https://github.com/OpenRC/openrc"
             }
           ]
         },
@@ -35,36 +40,43 @@
             {
               "name": "Debian",
               "description": "A community-run distribution founded in 1993, known for stability and a strict free-software policy. It is the base for Ubuntu, Linux Mint and countless others.",
+              "url": "https://www.debian.org/",
               "children": [
                 {
                   "name": "apt",
-                  "description": "Debian's package manager, and the tool nearly every Debian-derived distribution uses to install and upgrade software. It resolves dependencies over .deb packages."
+                  "description": "Debian's package manager, and the tool nearly every Debian-derived distribution uses to install and upgrade software. It resolves dependencies over .deb packages.",
+                  "url": "https://wiki.debian.org/Apt"
                 }
               ]
             },
             {
               "name": "Fedora",
               "description": "Red Hat's fast-moving community distribution. New upstream technology lands here first and later flows into Red Hat Enterprise Linux. Software is packaged as RPMs.",
+              "url": "https://fedoraproject.org/",
               "children": [
                 {
                   "name": "rpm",
                   "id": "rpm",
-                  "description": "The RPM Package Manager: a package format and toolchain from Red Hat, used by Fedora, RHEL and openSUSE. This node is shared — the same tooling shows up in two different ecosystems."
+                  "description": "The RPM Package Manager: a package format and toolchain from Red Hat, used by Fedora, RHEL and openSUSE. This node is shared — the same tooling shows up in two different ecosystems.",
+                  "url": "https://rpm.org/"
                 },
                 {
                   "name": "dnf",
-                  "description": "Fedora's package manager and the successor to yum. It resolves dependencies and installs RPM packages, leaning on the libsolv solver in recent versions."
+                  "description": "Fedora's package manager and the successor to yum. It resolves dependencies and installs RPM packages, leaning on the libsolv solver in recent versions.",
+                  "url": "https://github.com/rpm-software-management/dnf"
                 }
               ]
             },
             {
               "name": "openSUSE",
               "description": "A community distribution backed by SUSE, notable for its YaST administration tool and the Tumbleweed rolling release. It packages software as RPMs too.",
+              "url": "https://www.opensuse.org/",
               "children": [
                 { "name": "rpm", "id": "rpm" },
                 {
                   "name": "zypper",
-                  "description": "openSUSE's package manager. It installs RPM packages and integrates with the distribution's repositories, patterns and system rollback."
+                  "description": "openSUSE's package manager. It installs RPM packages and integrates with the distribution's repositories, patterns and system rollback.",
+                  "url": "https://en.opensuse.org/Portal:Zypper"
                 }
               ]
             }
@@ -83,20 +95,24 @@
             {
               "name": "FreeBSD",
               "description": "A general-purpose BSD with a reputation for performance and networking. Common on servers and appliances — Netflix uses it for content delivery.",
+              "url": "https://www.freebsd.org/",
               "children": [
                 {
                   "name": "pkg",
-                  "description": "FreeBSD's binary package manager. It installs prebuilt packages quickly, and can also drive builds from the Ports collection."
+                  "description": "FreeBSD's binary package manager. It installs prebuilt packages quickly, and can also drive builds from the Ports collection.",
+                  "url": "https://github.com/freebsd/pkg"
                 }
               ]
             },
             {
               "name": "OpenBSD",
-              "description": "Focused on security and correctness, with a famously thorough audit of its code. It gave the world OpenSSH and the PF firewall."
+              "description": "Focused on security and correctness, with a famously thorough audit of its code. It gave the world OpenSSH and the PF firewall.",
+              "url": "https://www.openbsd.org/"
             },
             {
               "name": "NetBSD",
-              "description": "Portability above all — it runs on more hardware architectures than any other operating system, and keeps a clean, well-structured codebase while doing it."
+              "description": "Portability above all — it runs on more hardware architectures than any other operating system, and keeps a clean, well-structured codebase while doing it.",
+              "url": "https://www.netbsd.org/"
             }
           ]
         }
