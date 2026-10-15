@@ -42,7 +42,22 @@ derived automatically from the hierarchy rather than being written by hand.
   reserved for hover/selection. Do not push per-tick positions into React state.
 - App chrome lives in `src/components/`: `NodePanel.tsx` is the node side panel
   and `SettingsDialog.tsx` is the settings popup, opened from the header gear.
-  The settings dialog is intentionally empty — add options there when asked.
+
+## Theming
+
+Colour schemes are data plus CSS, and adding one is deliberately small.
+
+1. Add a `:root[data-theme='<id>']` block to `src/style.css` setting the seven
+   base tokens only: `--bg`, `--surface`, `--fg`, `--muted`, `--accent`, `--node`
+   and `--node-shared`. Add `color-scheme: light` for light themes.
+2. Add an entry to `THEMES` in `src/themes.ts` — `id`, `label`, and four preview
+   swatches (`background`, `node`, `shared node`, `text`).
+
+Do not hardcode colours in component CSS; use a token. Everything else
+(`--border`, `--edge`, `--text-body`, hover/soft tints, `--backdrop`, `--shadow`)
+is derived from the seven in `:root` with `color-mix`, so it follows the active
+theme automatically. The picker writes `<html data-theme="…">` and remembers the
+choice in `localStorage` (`src/themes.ts`).
 
 ## Data format (`public/data.json`)
 

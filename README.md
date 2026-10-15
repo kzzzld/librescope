@@ -58,5 +58,16 @@ Then open the printed local URL.
 - Click a node to open a side panel with its description and connections; click a
   connection in the panel to jump to it, or press × to close.
 - Node size follows hierarchy depth: the root is largest, leaves are smallest.
-- Open **Settings** from the gear button in the header. The popup is empty for
-  now; Escape, the × button or a click outside close it.
+- Open **Settings** from the gear button in the header. Escape, the × button or a
+  click outside close it.
+
+## Themes
+
+Settings offers a colour scheme: LibreScope Dark (the default), Catppuccin Mocha
+and Latte, Tokyo Night, Solarized Dark and Light, Gruvbox Dark, Nord, Dracula,
+One Dark, One Light and Rosé Pine. Your choice is remembered in `localStorage`.
+
+A theme is a `:root[data-theme='…']` block in `src/style.css` that sets seven
+base colours, plus an entry in `src/themes.ts` for the picker. Everything else —
+borders, graph edges, body text, hover tints, the modal scrim — is derived from
+those seven, so a new theme is a short block and nothing else needs touching.
