@@ -125,6 +125,16 @@ To add a topic — a language, a package manager, a distro, a project:
 Do not add edges — they come from the tree structure. Do not invent fields: the
 whole vocabulary is `name`, `id`, `description`, `url` and `children`.
 
+## Packaging
+
+- `Dockerfile` builds the site with Node and serves `dist/` from nginx, in two
+  stages so the runtime image has no toolchain. If you change the container port,
+  keep `EXPOSE` and the mapping in `docker-compose.yml` in step.
+- `flake.nix` provides a dev shell (`nix develop`) and nothing else — no package
+  output, so there is no `npmDepsHash` to maintain.
+- Neither needs any change to the app: the build is a plain static site, and Vite
+  copies `public/data.json` into `dist/` on its own.
+
 ## Commands
 
 ```bash

@@ -53,6 +53,27 @@ Then open the printed local URL.
 | `npm run build` | Type-check and build to `dist/` |
 | `npm run preview` | Preview the production build |
 
+## Docker
+
+```bash
+docker compose up --build   # http://localhost:8080
+```
+
+The `Dockerfile` is two stages: Node builds the site, then nginx serves the
+result, so the runtime image carries no toolchain. `docker build -t librescope .`
+works too if you'd rather not use Compose.
+
+## Nix
+
+```bash
+nix develop     # a shell with Node and npm
+npm install
+npm run dev
+```
+
+The flake provides a dev shell only — it does not build the app, so no
+`npmDepsHash` needs refreshing.
+
 ## Interactions
 
 - Drag the background to pan, scroll to zoom.
