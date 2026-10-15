@@ -1,5 +1,14 @@
 :root {
   color-scheme: dark;
+
+  --bg: #0e1116;
+  --fg: #e6e9ef;
+  --muted: #8b94a3;
+  --border: #242b35;
+  --accent: #6ea8fe;
+  --node: #4c8bf5;
+  --node-shared: #e0a94a;
+  --edge: #2a3038;
 }
 
 * {
@@ -15,6 +24,158 @@ body,
 
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: #0e1116;
-  color: #e6e9ef;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app__header {
+  padding: 16px 20px 10px;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.app__hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.app__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.app__message {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.app__message--error {
+  color: var(--node-shared);
+}
+
+.app__message code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.app__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 10px 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--node);
+}
+
+.legend__dot--shared {
+  background: var(--node-shared);
+}
+
+.legend__line {
+  width: 18px;
+  height: 2px;
+  background: var(--edge);
+}
+
+/* --- graph ------------------------------------------------------------- */
+
+.graph {
+  display: block;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.graph:active {
+  cursor: grabbing;
+}
+
+.graph__node {
+  cursor: pointer;
+}
+
+.graph__node circle {
+  fill: var(--node);
+  stroke: var(--bg);
+  stroke-width: 2;
+  transition: fill 120ms ease;
+}
+
+.graph__node.is-shared circle {
+  fill: var(--node-shared);
+}
+
+.graph__node.is-active circle {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.graph__node.is-dim {
+  opacity: 0.14;
+}
+
+.graph__label {
+  fill: var(--fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.graph__edge {
+  stroke: var(--edge);
+  stroke-width: 1.2;
+  transition: stroke 120ms ease;
+}
+
+.graph__edge.is-hi {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.graph__edge.is-dim {
+  opacity: 0.08;
+}
+
+.graph__node,
+.graph__edge {
+  transition: opacity 120ms ease;
 }
