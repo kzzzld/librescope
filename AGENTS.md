@@ -62,14 +62,19 @@ choice in `localStorage` (`src/themes.ts`).
 ## Data format (`public/data.json`)
 
 A nested tree of nodes. Each node has a `name`, optional `children`, and
-optional `id` and `description`:
+optional `id`, `description` and `url`:
 
 ```json
 {
   "name": "Desktop",
   "description": "What Desktop means in this graph.",
   "children": [
-    { "name": "Linux", "children": [{ "name": "Init Systems", "children": [] }] },
+    {
+      "name": "Linux",
+      "description": "The kernel and its ecosystem.",
+      "url": "https://www.kernel.org/",
+      "children": []
+    },
     { "name": "rpm", "id": "rpm" }
   ]
 }
@@ -86,6 +91,11 @@ Rules:
 - **`description` is optional prose** shown in the side panel when the node is
   selected. A sentence or two is plenty. For a merged node the first occurrence
   wins.
+- **`url` is the official website**, shown as a link in the side panel. It is
+  optional: **if the thing has no website of its own, leave the key out** rather
+  than pointing at a wiki, a search result or a placeholder. Use a full
+  `https://` URL, and prefer the project's own home over a GitHub mirror unless
+  the repository really is its home. Verify the URL resolves before committing.
 - One edge per **parent → child** relationship. Edges are never written by hand.
 - Renaming a `name` changes its path, so it re-wires that branch.
 
@@ -100,13 +110,15 @@ To add a topic — a language, a package manager, a distro, a project:
    comma style.
 3. Write the `description` as one or two sentences of plain prose: what the thing
    is and why it belongs here. No marketing, no bullet lists.
-4. Add `"id": "..."` only when the same thing genuinely belongs to two branches
+4. Add `"url"` if it has a website of its own. Omit the key when it does not —
+   never invent one. Check the URL resolves before committing.
+5. Add `"id": "..."` only when the same thing genuinely belongs to two branches
    and should be one shared node, like `rpm`.
-5. Confirm the JSON still parses (`node -e "JSON.parse(require('fs').readFileSync('public/data.json'))"`),
+6. Confirm the JSON still parses (`node -e "JSON.parse(require('fs').readFileSync('public/data.json'))"`),
    then commit.
 
 Do not add edges — they come from the tree structure. Do not invent fields: the
-whole vocabulary is `name`, `id`, `description` and `children`.
+whole vocabulary is `name`, `id`, `description`, `url` and `children`.
 
 ## Commands
 

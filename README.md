@@ -7,7 +7,7 @@ JSON tree — you write the hierarchy, LibreScope draws the graph.
 ## Data
 
 Edit `public/data.json`. It is a nested tree where each node has a `name`,
-optional `children`, and an optional `id` and `description`:
+optional `children`, and an optional `id`, `description` and `url`:
 
 ```json
 {
@@ -16,6 +16,7 @@ optional `children`, and an optional `id` and `description`:
   "children": [
     {
       "name": "Linux",
+      "url": "https://www.kernel.org/",
       "children": [{ "name": "Init Systems", "children": [{ "name": "systemd" }] }]
     }
   ]
@@ -28,6 +29,8 @@ optional `children`, and an optional `id` and `description`:
 - Add an **`id`** to override that and merge nodes across branches. `rpm` carries
   `"id": "rpm"` under both Fedora and openSUSE, which makes it one shared hub.
 - Add a **`description`** to show prose in the side panel for that node.
+- Add a **`url`** to show a website link in the side panel. Omit it when the
+  thing has no site of its own — the panel then simply shows no link.
 - Every parent → child pair becomes an edge. You never write edges yourself.
 
 Because the graph is built from the file itself, no rebuild is needed: edit
@@ -55,8 +58,9 @@ Then open the printed local URL.
 - Drag the background to pan, scroll to zoom.
 - Drag a node to move it; the simulation rebalances around it.
 - Hover a node to highlight its neighbours.
-- Click a node to open a side panel with its description and connections; click a
-  connection in the panel to jump to it, or press × to close.
+- Click a node to open a side panel with its description, its website (when it
+  has one) and its connections; click a connection in the panel to jump to it, or
+  press × to close.
 - Node size follows hierarchy depth: the root is largest, leaves are smallest.
 - Open **Settings** from the gear button in the header. Escape, the × button or a
   click outside close it.
