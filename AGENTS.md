@@ -22,6 +22,10 @@ LibreScope is a web app for exploring the open-source ecosystem as an interactiv
 node graph (Obsidian graph-view style). Data lives in a single JSON tree; edges are
 derived automatically from the hierarchy rather than being written by hand.
 
+The project is MIT licensed (see `LICENSE`). Keep the license field in
+`package.json` and the `meta.license` in `flake.nix` in step with it, and do not
+relicense without being asked.
+
 ## Git policy (important)
 
 - **Commit after every change. Do not ask for permission to commit.**

@@ -138,3 +138,7 @@ A theme is a `:root[data-theme='…']` block in `src/style.css` that sets seven
 base colours, plus an entry in `src/themes.ts` for the picker. Everything else —
 borders, graph edges, body text, hover tints, the modal scrim — is derived from
 those seven, so a new theme is a short block and nothing else needs touching.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
