@@ -3,6 +3,7 @@ import GraphView from './components/Graph'
 import NodePanel from './components/NodePanel'
 import SettingsDialog from './components/SettingsDialog'
 import { fetchGraph } from './lib/graph'
+import { applyTheme, readStoredTheme } from './themes'
 import type { Graph } from './types'
 
 export default function App() {
@@ -11,8 +12,13 @@ export default function App() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [theme, setTheme] = useState<string>(readStoredTheme)
   const [size, setSize] = useState({ width: 0, height: 0 })
   const stageRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    applyTheme(theme)
+  }, [theme])
 
   useEffect(() => {
     let cancelled = false
@@ -149,7 +155,12 @@ export default function App() {
         </span>
       </footer>
 
-      <SettingsDialog open={settingsOpen} onClose={closeSettings} />
+      <SettingsDialog
+        open={settingsOpen}
+        onClose={closeSettings}
+        theme={theme}
+        onThemeChange={setTheme}
+      />
     </div>
   )
 }

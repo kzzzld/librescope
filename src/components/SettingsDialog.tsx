@@ -1,16 +1,23 @@
 import { useEffect, useRef } from 'react'
+import { THEMES } from '../themes'
 
 interface SettingsDialogProps {
   open: boolean
   onClose: () => void
+  theme: string
+  onThemeChange: (id: string) => void
 }
 
 /**
- * Settings popup. Intentionally empty for now — options will be added here
- * later. Uses a native `<dialog>` so Escape-to-close, focus trapping and the
- * backdrop come from the browser rather than hand-rolled code.
+ * Settings popup. Uses a native `<dialog>` so Escape-to-close, focus trapping
+ * and the backdrop come from the browser rather than hand-rolled code.
  */
-export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
+export default function SettingsDialog({
+  open,
+  onClose,
+  theme,
+  onThemeChange,
+}: SettingsDialogProps) {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
@@ -46,7 +53,37 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
           </button>
         </header>
 
-        <p className="settings__empty">Nothing to configure yet.</p>
+        <section className="settings__section">
+          <h3 className="settings__section-title" id="settings-theme">
+            Color scheme
+          </h3>
+          <div className="theme-grid" role="radiogroup" aria-labelledby="settings-theme">
+            {THEMES.map((option) => {
+              const active = option.id === theme
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  className={active ? 'theme-option is-active' : 'theme-option'}
+                  onClick={() => onThemeChange(option.id)}
+                >
+                  <span className="theme-option__swatches" aria-hidden="true">
+                    {option.swatches.map((color) => (
+                      <span
+                        key={color}
+                        className="theme-option__swatch"
+                        style={{ background: color }}
+                      />
+                    ))}
+                  </span>
+                  <span className="theme-option__label">{option.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        </section>
       </div>
     </dialog>
   )
