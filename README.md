@@ -185,6 +185,11 @@ base colours, plus an entry in `src/themes.ts` for the picker. Everything else �
 borders, graph edges, body text, hover tints, the modal scrim — is derived from
 those seven, so a new theme is a short block and nothing else needs touching.
 
+## Contributing
+
+Patches by email only — send them to kzzzl@kzzzl.xyz. Pull requests are not
+accepted. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
