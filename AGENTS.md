@@ -136,8 +136,10 @@ whole vocabulary is `name`, `id`, `description`, `url` and `children`.
   keep `EXPOSE` and the mapping in `docker-compose.yml` in step.
 - `flake.nix` provides three things: a dev shell (`nix develop`), the package
   (`nix build` — a static site, built with `buildNpmPackage`), and
-  `nixosModules.default`, which serves that build with nginx on
-  `services.librescope.port` (default 5555). Dependencies come from
+  `nixosModules.default`. The module is deliberately tiny: `enable` and `port`
+  only, serving the site on 127.0.0.1 so the port is not publicly reachable.
+  Public-facing nginx (TLS, domains, proxying) is left to the user's own config —
+  keep it that way rather than growing the module. Dependencies come from
   `package-lock.json` through `importNpmLock`, so there is no `npmDepsHash` to
   refresh when they move.
 - Neither needs any change to the app: the build is a plain static site, and Vite

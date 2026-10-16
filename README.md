@@ -84,7 +84,8 @@ no `npmDepsHash` to refresh when dependencies move.
 
 **Deploy on NixOS**
 
-The flake exports a NixOS module. Add this repository as an input and import it:
+The flake exports a deliberately small NixOS module — it serves the built site on
+one port and nothing else. Front it with your own nginx vhost:
 
 ```nix
 {
@@ -102,9 +103,13 @@ The flake exports a NixOS module. Add this repository as an input and import it:
         {
           services.librescope = {
             enable = true;
-            hostName = "librescope.example.com";
+            port = 5555;
+          };
+
+          services.nginx.virtualHosts."scope.example.com" = {
             enableACME = true;
             forceSSL = true;
+            locations."/".proxyPass = "http://127.0.0.1:5555";
           };
         }
       ];
@@ -113,10 +118,11 @@ The flake exports a NixOS module. Add this repository as an input and import it:
 }
 ```
 
-Options: `enable`, `package`, `hostName`, `port` (default 5555), `enableACME`,
-`forceSSL`, `openFirewall`. Leave `hostName`/`enableACME` out for plain HTTP on
-`port`; set them for a certificate. `enableACME` needs two other things in the
-system configuration:
+Two options, that's the lot: `enable` and `port` (default 5555). The app binds to
+**127.0.0.1 only**, so the port is never reachable from outside — the proxy is the
+only way in, and there is no firewall rule to remember.
+
+TLS is your vhost's business, so `enableACME` needs the usual system-wide setup:
 
 ```nix
 security.acme = {
@@ -125,8 +131,8 @@ security.acme = {
 };
 ```
 
-Then point a DNS record at the VPS, make sure ports 80 and 443 reach it (the
-module opens them in the firewall itself), and rebuild on the box:
+Then point a DNS record at the VPS, make sure ports 80 and 443 reach it, and
+rebuild on the box:
 
 ```bash
 sudo nixos-rebuild switch --flake ~/nix#vps
