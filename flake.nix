@@ -63,113 +63,51 @@
         };
       });
 
-      # Serve the built site with nginx:
+      # A deliberately small module: it serves the built site on one port and
+      # nothing else. Public-facing nginx stays yours to write, e.g.
       #
-      #   services.librescope.enable = true;
-      #   services.librescope.port = 5555;
+      #   services.librescope = {
+      #     enable = true;
+      #     port = 5555;
+      #   };
       #
-      # or, for a public domain with a Let's Encrypt certificate:
-      #
-      #   services.librescope.hostName = "librescope.example.com";
-      #   services.librescope.enableACME = true;
-      #   services.librescope.forceSSL = true;
+      #   services.nginx.virtualHosts."scope.example.com" = {
+      #     enableACME = true;
+      #     forceSSL = true;
+      #     locations."/".proxyPass = "http://127.0.0.1:5555";
+      #   };
       nixosModules.librescope =
         { config, lib, pkgs, ... }:
         let
           cfg = config.services.librescope;
-
-          # With ACME we deliberately leave `listen` alone: the nginx module then
-          # derives the listeners itself, which is what the ACME machinery needs
-          # (port 80 for the challenge, 443 for the site). Without ACME we pick
-          # the port ourselves.
-          vhostName = if cfg.hostName != null then cfg.hostName else "librescope";
         in
         {
           options.services.librescope = {
             enable = lib.mkEnableOption "the LibreScope web app";
 
-            package = lib.mkOption {
-              type = lib.types.package;
-              default = self.packages.${pkgs.stdenv.hostPlatform.system}.librescope;
-              description = "The LibreScope build to serve.";
-            };
-
-            hostName = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
-              default = null;
-              example = "librescope.example.com";
-              description = ''
-                Domain to serve. When left null the site answers on any host name
-                at {option}`services.librescope.port`.
-              '';
-            };
-
             port = lib.mkOption {
               type = lib.types.port;
               default = 5555;
               description = ''
-                Port the web server listens on. Ignored when
-                {option}`services.librescope.enableACME` is set, because ACME runs
-                over the standard ports 80 and 443.
-              '';
-            };
-
-            enableACME = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = ''
-                Ask Let's Encrypt for a certificate for
-                {option}`services.librescope.hostName` and serve the site over
-                HTTPS. Requires `security.acme.acceptTerms = true;` in the system
-                configuration.
-              '';
-            };
-
-            forceSSL = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = ''
-                Redirect plain HTTP to HTTPS. Usually set alongside
-                {option}`services.librescope.enableACME`.
-              '';
-            };
-
-            openFirewall = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = ''
-                Open {option}`services.librescope.port` in the firewall. Ports 80
-                and 443 are opened automatically when
-                {option}`services.librescope.enableACME` is set.
+                Port the app serves on. It binds to 127.0.0.1 only, so the port is
+                never reachable from outside — point your own nginx vhost at it.
               '';
             };
           };
 
           config = lib.mkIf cfg.enable {
-            assertions = [
-              {
-                assertion = !cfg.enableACME || cfg.hostName != null;
-                message = "services.librescope.enableACME requires services.librescope.hostName to be set.";
-              }
-            ];
-
             services.nginx = {
               enable = true;
-              virtualHosts.${vhostName} = {
-                inherit (cfg) enableACME forceSSL;
-                root = "${cfg.package}/share/librescope";
-              } // lib.optionalAttrs (!cfg.enableACME) {
+              virtualHosts."librescope" = {
                 listen = [
                   {
-                    addr = "0.0.0.0";
+                    addr = "127.0.0.1";
                     port = cfg.port;
                   }
                 ];
+                root = "${self.packages.${pkgs.stdenv.hostPlatform.system}.librescope}/share/librescope";
               };
             };
-
-            networking.firewall.allowedTCPPorts =
-              lib.optionals cfg.openFirewall [ cfg.port ] ++ lib.optionals cfg.enableACME [ 80 443 ];
           };
         };
 
