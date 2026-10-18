@@ -187,8 +187,9 @@ those seven, so a new theme is a short block and nothing else needs touching.
 
 ## Contributing
 
-Patches by email only — send them to kzzzl@kzzzl.xyz. Pull requests are not
-accepted. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome as pull requests against
+[`main`](https://github.com/kzzzld/librescope). See
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
