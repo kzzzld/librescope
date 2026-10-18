@@ -91,7 +91,7 @@ one port and nothing else. Front it with your own nginx vhost:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    librescope.url = "git+ssh://forgejo@git.kzzzl.xyz/kzzzl/LibreScope.git";
+    librescope.url = "github:kzzzld/librescope";
   };
 
   outputs = { self, nixpkgs, librescope, ... }: {

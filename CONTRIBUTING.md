@@ -9,7 +9,7 @@ Work on a branch, commit your change, and mail the commits to
 [kzzzl@kzzzl.xyz](mailto:kzzzl@kzzzl.xyz) with `git send-email`:
 
 ```bash
-git clone https://git.kzzzl.xyz/kzzzl/LibreScope.git
+git clone https://github.com/kzzzld/librescope.git
 cd LibreScope
 git checkout -b my-change
 # ... edit, then ...
